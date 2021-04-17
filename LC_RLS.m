@@ -1,4 +1,5 @@
 function [ y,W ] = LC_RLS( s_in, J, M)
+// test commit
 
     delta_min_2 = 1000;
 lamda = 1;
