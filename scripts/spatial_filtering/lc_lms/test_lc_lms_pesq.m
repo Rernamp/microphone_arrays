@@ -44,7 +44,7 @@ L = L_min:L_max;
 
 
 for l = L_min:L_max
-    [y_cl,y,W_n] = func_Frost_for_PESQ(sig_in_MR_sig,sig_in_MR_noise,l,K,mu);
+    [y_cl,y,W_n] = spat_filt_wb_time_lc_lms_pesq(sig_in_MR_sig,sig_in_MR_noise,l,K,mu);
     k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
    
 end
@@ -61,7 +61,7 @@ for p = k_min:k_max
         sig_in_MR_sig(n,:) = sig;
         
     end
-    [y_cl,y,W_n] = func_Frost_for_PESQ(sig_in_MR_sig,sig_in_MR_noise,L_k,p,mu);
+    [y_cl,y,W_n] = spat_filt_wb_time_lc_lms_pesq(sig_in_MR_sig,sig_in_MR_noise,L_k,p,mu);
     k_K(p-k_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
     
 end

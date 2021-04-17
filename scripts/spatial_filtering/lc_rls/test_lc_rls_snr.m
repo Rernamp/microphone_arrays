@@ -47,8 +47,8 @@ L_min = 16;
 L = L_min:2:L_max; 
 i = 1;
 for l = L_min:2:L_max
-    [y_noise,W_n] = LC_RLS(sig_in_MR_noise, l, K);
-    [y_sig,W_s] = LC_RLS(sig_in_MR_sig, l, K);
+    [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, l, K);
+    [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, l, K);
     osh_l(i) = mean(y_sig.^2)/mean(y_noise.^2);
     i = i + 1;
 end
@@ -65,8 +65,8 @@ for p = k_min:k_max
         sig_in_MR_sig(n,:) = sig;
         
     end
-    [y_noise,W_n] = LC_RLS(sig_in_MR_noise, L_k,p);
-    [y_sig,W_s] = LC_RLS(sig_in_MR_sig, L_k, p);
+    [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, L_k,p);
+    [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, L_k, p);
     
     %y_noise = y_noise(41:end);
     %y_sig = y_sig(41:end);

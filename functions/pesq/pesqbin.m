@@ -100,7 +100,7 @@ function [ scores ] = pesqbin_linux( reference, degraded, fs, mode, binary )
     % the pesq_results.txt logfile will also be written
     tmpdir = sprintf( '%s%s', filesep, 'tmp' );
     tmpdir = regexprep( tmpdir, '\n.*', '' );
-    system('cp pesq.exe /tmp');
+    %system('cp pesq.exe /tmp');
     % default precision for audio samples (in number of bits)
     nbits = 16;
 

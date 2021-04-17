@@ -44,9 +44,9 @@ L = L_min:L_max;
 
 
 for l = L_min:L_max
-    [y_noise,W_n] = func_Frost(sig_in_MR_noise, l, K, mu);
-    [y_sig,W_s] = func_Frost(sig_in_MR_sig, l, K, mu);
-    osh_l(l-L_min+1) = mean(y_sig.^2)/mean(y_noise.^2)
+    [y_noise,W_n] = spat_filt_wb_time_lc_lms(sig_in_MR_noise, l, K, mu);
+    [y_sig,W_s] = spat_filt_wb_time_lc_lms(sig_in_MR_sig, l, K, mu);
+    osh_l(l-L_min+1) = mean(y_sig.^2)/mean(y_noise.^2);
    
 end
 %%
@@ -62,8 +62,8 @@ for p = k_min:k_max
         sig_in_MR_sig(n,:) = sig;
         
     end
-    [y_noise,W_n] = func_Frost(sig_in_MR_noise, L_k,p, mu);
-    [y_sig,W_s] = func_Frost(sig_in_MR_sig, L_k, p, mu);
+    [y_noise,W_n] = spat_filt_wb_time_lc_lms(sig_in_MR_noise, L_k,p, mu);
+    [y_sig,W_s] = spat_filt_wb_time_lc_lms(sig_in_MR_sig, L_k, p, mu);
     osh_k(p-k_min+1) = mean(y_sig.^2)/mean(y_noise.^2);
     
 end

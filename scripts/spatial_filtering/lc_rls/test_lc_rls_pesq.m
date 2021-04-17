@@ -45,11 +45,12 @@ time = 0:1/fs:(length(noise)-1)/fs;
 L_max = 64;
 L_min = 16;
 L = L_min:2:L_max; 
-i = 1;
+%%
 for l = L_min:2:L_max
-    [y_cl,y,W_n] = LC_RLS_for_PESQ(sig_in_MR_sig,sig_in_MR_noise, l, K);
-    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
+    [y_cl,y,W_n] = spat_filt_wb_time_lc_rls_pesq(sig_in_MR_sig,sig_in_MR_noise, l, K);
+    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb')
 end
+k_l(k_l == 0) = [];
 %%
 k_max = 8;
 k_min = 2;
@@ -63,7 +64,7 @@ for p = k_min:k_max
         sig_in_MR_sig(n,:) = sig;
         
     end
-    [y_cl,y,W_n] = LC_RLS_for_PESQ(sig_in_MR_sig,sig_in_MR_noise, L_k, p);
+    [y_cl,y,W_n] = spat_filt_wb_time_lc_rls_pesq(sig_in_MR_sig,sig_in_MR_noise, L_k, p);
     k_K(p-k_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
 end
 %%
@@ -71,7 +72,7 @@ l = L_min:L_max;
 
 figure()
 
-plot(l,k_l(:,1))
+plot(l,k_l(1:end-1))
 grid on
 title("PESQ")
 xlabel("J, K = 4")
