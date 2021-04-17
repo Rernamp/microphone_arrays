@@ -1,4 +1,4 @@
-function [y_clear, y,W ] = LC_RLS_for_PESQ(s_in_clear, s_in, J, M)
+function [y_clear, y,W ] = spat_filt_wb_time_lc_rls_pesq(s_in_clear, s_in, J, M)
 
     delta_min_2 = 1000;
 lamda = 1;

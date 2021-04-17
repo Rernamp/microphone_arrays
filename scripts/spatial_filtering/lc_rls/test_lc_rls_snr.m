@@ -35,7 +35,7 @@ tau = (d*sind(thetaan))/(c);
 %%
 for k = 1:K
     [y_shift] = shift( noise, tau*(k-1), fs);
-    sig_in_MR_noise(k,:) = y_shift+sig';
+    sig_in_MR_noise(k,:) = y_shift;
     sig_in_MR_sig(k,:) = sig;
 end
 
@@ -47,8 +47,10 @@ L_min = 16;
 L = L_min:2:L_max; 
 i = 1;
 for l = L_min:2:L_max
-    [y_cl,y,W_n] = LC_RLS_for_PESQ(sig_in_MR_sig,sig_in_MR_noise, l, K);
-    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
+    [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, l, K);
+    [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, l, K);
+    osh_l(i) = mean(y_sig.^2)/mean(y_noise.^2);
+    i = i + 1;
 end
 %%
 k_max = 8;
@@ -59,30 +61,37 @@ for p = k_min:k_max
     sig_in_MR_sig = zeros(p, length(sig));
     for n = 1:p
         [y_shift] = shift( noise, tau*(n-1), fs);
-        sig_in_MR_noise(n,:) = y_shift+sig';
+        sig_in_MR_noise(n,:) = y_shift;
         sig_in_MR_sig(n,:) = sig;
         
     end
-    [y_cl,y,W_n] = LC_RLS_for_PESQ(sig_in_MR_sig,sig_in_MR_noise, L_k, p);
-    k_K(p-k_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
+    [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, L_k,p);
+    [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, L_k, p);
+    
+    %y_noise = y_noise(41:end);
+    %y_sig = y_sig(41:end);
+    
+    y_noise = y_noise;
+    y_sig = y_sig;
+    osh_k(p-k_min+1) = mean(y_sig.^2)/mean(y_noise.^2)
+   
 end
 %%
-l = L_min:L_max;
+l = L_min:2:L_max;
 
 figure()
-
-plot(l,k_l(:,1))
+plot(l,db(osh_l-osh_in))
+ylabel('ОСШ')
+xlabel('Порядок фильтра, K = 4')
+title('ОСШ взависимости от порядка фильтра')
 grid on
-title("PESQ")
-xlabel("J, K = 4")
-ylabel("ОСШ")
-
+%%
 p = k_min:k_max;
 
 figure()
-
-plot(p,k_K(:,1))
+plot(p,db(osh_k-osh_in))
+ylabel('ОСШ')
+xlabel('Число микрофонов, J = 32')
+title('ОСШ взависимости от числа элементов МР')
 grid on
-title("PESQ")
-xlabel("K, J = 32")
-ylabel("ОСШ")
+

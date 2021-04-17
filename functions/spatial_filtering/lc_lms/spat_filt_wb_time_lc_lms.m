@@ -1,4 +1,4 @@
-function [y,W] = func_Frost(s_in, J, K, mu)
+function [y,W] = spat_filt_wb_time_lc_lms(s_in, J, K, mu)
     %создаю начальные и вспомогательные вектора
     y = zeros(length(s_in(1,:)),1);
     f = [1 ;zeros(J-1,1)];

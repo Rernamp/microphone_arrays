@@ -1,5 +1,4 @@
-function [ y,W ] = LC_RLS( s_in, J, M)
-% test commit
+function [ y,W ] = spat_filt_wb_time_lc_rls( s_in, J, M)
 
     delta_min_2 = 1000;
 lamda = 1;
