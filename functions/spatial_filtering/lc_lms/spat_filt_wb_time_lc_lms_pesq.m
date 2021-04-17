@@ -1,4 +1,4 @@
-function [y_clear,y,W] = func_Frost_for_PESQ(s_in_clear,s_in, J, K, mu)
+function [y_clear,y,W] = spat_filt_wb_time_lc_lms_pesq(s_in_clear,s_in, J, K, mu)
     %создаю начальные и вспомогательные вектора
     y = zeros(length(s_in(1,:)),1);
     y_clear = zeros(length(s_in(1,:)),1);
