@@ -45,10 +45,12 @@ time = 0:1/fs:(length(noise)-1)/fs;
 L_max = 64;
 L_min = 16;
 L = L_min:2:L_max; 
+i = 1;
 %%
 for l = L_min:2:L_max
     [y_cl,y,W_n] = spat_filt_wb_time_lc_rls_pesq(sig_in_MR_sig,sig_in_MR_noise, l, K);
-    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
+    k_l(i,1:2) = pesqbin(y_cl,y,fs,'nb');
+    i=i+1;
 end
 
 %%
@@ -72,18 +74,20 @@ l = L_min:2:L_max;
 
 figure()
 
-plot(l,k_l)
+plot(l,k_l(:,1))
 grid on
-title("PESQ")
-xlabel("J, K = 4")
-ylabel("ОСШ")
+title("PESQ для LC RLS")
+xlabel("J , K = 4")
+ylabel("PESQ")
 
-p = k_min:k_max;
+K = k_min:k_max;
 
 figure()
 
-plot(p,k_K(:,1))
+plot(K,k_K(:,1))
 grid on
-title("PESQ")
+title("PESQ для LC RLS")
 xlabel("K, J = 32")
-ylabel("ОСШ")
+ylabel("PESQ")
+
+save('PESQ_RLS.mat','l','K','k_l','k_K');

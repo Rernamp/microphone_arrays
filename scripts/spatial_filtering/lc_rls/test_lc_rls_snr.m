@@ -68,30 +68,31 @@ for p = k_min:k_max
     [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, L_k,p);
     [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, L_k, p);
     
-    y_noise = y_noise(41:end);
-    y_sig = y_sig(41:end);
-    
-    %y_noise = y_noise;
-    %y_sig = y_sig;
+      y_noise = y_noise(41:end);
+      y_sig = y_sig(41:end);
+     
+%     y_noise = y_noise;
+%     y_sig = y_sig;
     osh_k(p-k_min+1) = mean(y_sig.^2)/mean(y_noise.^2)
    
 end
 %%
 l = L_min:2:L_max;
-
+SNR_L = db(osh_l-osh_in);
 figure()
-plot(l,db(osh_l-osh_in))
+plot(l,SNR_L)
 ylabel('ОСШ')
 xlabel('Порядок фильтра, K = 4')
-title('ОСШ взависимости от порядка фильтра')
+title('ОСШ взависимости от порядка фильтра для LC RLS')
 grid on
 %%
-p = k_min:k_max;
-
+K = k_min:k_max;
+SNR_K = db(osh_k-osh_in);
 figure()
-plot(p,db(osh_k-osh_in))
+plot(K,SNR_K)
 ylabel('ОСШ')
 xlabel('Число микрофонов, J = 32')
-title('ОСШ взависимости от числа элементов МР')
+title('ОСШ взависимости от числа элементов МР для LC RLS')
 grid on
 
+save('SNR_RLS.mat','l','K','SNR_K','SNR_L');
