@@ -68,11 +68,11 @@ for p = k_min:k_max
     [y_noise,W_n] = spat_filt_wb_time_lc_rls(sig_in_MR_noise, L_k,p);
     [y_sig,W_s] = spat_filt_wb_time_lc_rls(sig_in_MR_sig, L_k, p);
     
-    %y_noise = y_noise(41:end);
-    %y_sig = y_sig(41:end);
+    y_noise = y_noise(41:end);
+    y_sig = y_sig(41:end);
     
-    y_noise = y_noise;
-    y_sig = y_sig;
+    %y_noise = y_noise;
+    %y_sig = y_sig;
     osh_k(p-k_min+1) = mean(y_sig.^2)/mean(y_noise.^2)
    
 end

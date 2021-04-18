@@ -7,7 +7,7 @@ K = 4;
 f_up = 4000;   
 f_down = 0;  
 f_den = 0.5;   
-L = 30;
+L = 32;
 d = 0.04;
 
 thetaad = 0;     
@@ -34,7 +34,7 @@ for k = 1:K
     sig_in_MR_sig(k,:) = sig;
 end
 
-mu = 0.05;
+mu = 1;
 
 time = 0:1/fs:(length(noise)-1)/fs;
 
@@ -43,13 +43,14 @@ L_min = 16;
 L = L_min:L_max; 
 
 
-for l = L_min:L_max
+for l = L_min:2:L_max
     [y_noise,W_n] = spat_filt_wb_time_lc_lms(sig_in_MR_noise, l, K, mu);
     [y_sig,W_s] = spat_filt_wb_time_lc_lms(sig_in_MR_sig, l, K, mu);
     osh_l(l-L_min+1) = mean(y_sig.^2)/mean(y_noise.^2);
    
 end
 %%
+mu = 0.1;
 k_max = 8;
 k_min = 2;
 L_k = 32;

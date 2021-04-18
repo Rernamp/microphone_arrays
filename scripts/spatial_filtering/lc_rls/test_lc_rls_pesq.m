@@ -48,9 +48,9 @@ L = L_min:2:L_max;
 %%
 for l = L_min:2:L_max
     [y_cl,y,W_n] = spat_filt_wb_time_lc_rls_pesq(sig_in_MR_sig,sig_in_MR_noise, l, K);
-    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb')
+    k_l(l-L_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
 end
-k_l(k_l == 0) = [];
+
 %%
 k_max = 8;
 k_min = 2;
@@ -68,11 +68,11 @@ for p = k_min:k_max
     k_K(p-k_min+1,1:2) = pesqbin(y_cl,y,fs,'nb');
 end
 %%
-l = L_min:L_max;
+l = L_min:2:L_max;
 
 figure()
 
-plot(l,k_l(1:end-1))
+plot(l,k_l)
 grid on
 title("PESQ")
 xlabel("J, K = 4")

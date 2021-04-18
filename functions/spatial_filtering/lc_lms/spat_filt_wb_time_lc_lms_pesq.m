@@ -1,50 +1,37 @@
-function [y_clear,y,W] = spat_filt_wb_time_lc_lms_pesq(s_in_clear,s_in, J, K, mu)
-    %создаю начальные и вспомогательные вектора
-    y = zeros(length(s_in(1,:)),1);
-    y_clear = zeros(length(s_in(1,:)),1);
-    f = [1 ;zeros(J-1,1)];
-    C = [ones(K,1) ;zeros(K*(J-1),1)];
+function [y_clear,y,W] = spat_filt_wb_time_lc_lms_pesq(s_in_clear,s_in, J, M, mu)
+    x = zeros(M*J,1);
+    x_clear = zeros(M*J,1);
+    f = [1; zeros(J-1,1)];
+
+    delta_min_2 = 2.2204460492503131e-016;
+
+    C = [ones(M,1) ;zeros(M*(J-1),1)];
     for l = 1 : J-1
-        C = [C [zeros(l*K,1) ; ones(K,1) ; zeros(K*(J-l-1),1)]];
+        C = [C [zeros(l*M,1) ; ones(M,1) ; zeros(M*(J-l-1),1)]];
     end
-      
-    W_p = C*inv(C'*C)*f;       
+
+    Q = C * inv(C'*C);
+
+    h = Q*f;
+    y = zeros(1,length(s_in));
+    y_clear = zeros(1,length(s_in));
     
-    W = zeros(K, J);
-    %в статье у них получаетс€ вектор размером KJ на 1. ѕоэтому разбиваю
-    %дл€ себ€.  онечно можно оставить и в таком варианте,но нужно изменить
-    %код
-    for b = 1:K
-        W(b,:) = W_p(1+(b-1)*J:J*b);
+    for i = 1:length(s_in) 
+
+        x = [s_in(:,i); x(1:end-M)];
+        x_clear = [s_in_clear(:,i); x_clear(1:end-M)];
+        
+        y_clear(i) = h' * x_clear;
+        y(i) = h' * x;
+
+        alpha = - h' * x;
+        k_k = ((x'*x + (x'*Q)*(C'*x) + delta_min_2));
+        alpha = alpha*inv(k_k);
+        h = h + 2*mu*x*alpha;
+
+        h = h + Q*(f-C'*h);
+
     end
-    %вектора дл€ посчета суммы
-    I_for_W = ones(1,K);
-    I_for_x = ones(K,1);
-    %цикл фильтрации
-    x_i = zeros(J, K);
-    x_i_clear = zeros(J, K);
-    for k = 1 : length(s_in)
-        
-        %набор новых значений
-        x_i = [s_in(:, k).' ; x_i(1:J - 1, :)];
-        x_i_clear = [s_in_clear(:, k).' ; x_i_clear(1:J - 1, :)];
-        %цикл фильтрации
-        for z = 1 : K
-            y(k) = y(k) + (W(z,:) * x_i(:,z));
-            y_clear(k) = y_clear(k) + (W(z,:) * x_i_clear(:,z));
-        end
-        
-        %цикл дл€ алгоритма
-        
-        Dop = I_for_W * W - mu * y(k) * I_for_x' * x_i';
-        for n = 1 : J
-                        
-            for l = 1:K
-                W (l, n) = W(l, n) - mu * y(k) .* x_i(n, l).' - (Dop(n) /K) + f(n)/K;
-            end
-                       
-        end
-        
-    end
+    W = h;
 end
 
