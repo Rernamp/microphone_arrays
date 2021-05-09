@@ -35,12 +35,13 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     [X_phi,Y_phi] =  meshgrid(f_pos,teta);
     
     figure()
-    
+    tit = strcat("Const \phi = " ,string(phi_const));
     surf(X_phi,Y_phi,BP_phi_dB')
     grid on
     zlim([-40 50])
     xlabel("frequency , f");
-    ylabel("angle,\phi");
+    title(tit)
+    ylabel("angle,\theta");
     zlabel("BP, dB");
 %     shading interp 
 %     grid on %
@@ -49,11 +50,13 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     [X_teta,Y_teta] = meshgrid(f_pos,phi);
     
     figure()
+    tit = strcat("Const \theta = " ,string(teta_const));
     surf(X_teta,Y_teta,BP_teta_dB')
     grid on
     zlim([-40 50])
     xlabel("frequency , f");
-    ylabel("angle,\theta");
+    ylabel("angle,\phi");
+    title(tit)
     zlabel("BP, dB");
 %     shading interp 
 %     grid on %
