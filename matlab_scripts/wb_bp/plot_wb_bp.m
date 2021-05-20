@@ -10,7 +10,7 @@ teta_const = 30;
 
 c = 343;
 p_loc = gen_place_el(4,4,0.04,0.04,1)';
-% w_nm = rand(1,N*J);
+w_nm = rand(1,N*J);
 
 
 w_nm = ones(1,N*J);

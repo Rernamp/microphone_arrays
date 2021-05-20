@@ -4,6 +4,7 @@ x = zeros(M*J,1);
 f = [1; zeros(J-1,1)];
 
 delta_min_2 = 2.2204460492503131e-016;
+% delta_min_2 = 0.01;
 
 C = [ones(M,1) ;zeros(M*(J-1),1)];
 for l = 1 : J-1

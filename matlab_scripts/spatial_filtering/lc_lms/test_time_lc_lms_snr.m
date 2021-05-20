@@ -18,15 +18,18 @@ thetaan = 60;
 [sig,fs] = audioread('speech_dft_8kHz.wav');
 
 t = 2;
-%%
-sig = sig(1:t*fs);
-noise = noise(1:t*fs);
+
+
+    sig = sig(1:t*fs);
+    noise = noise(1:t*fs);
+    noise = noise;
+    
+    tau = (d*sind(thetaan))/(c);
+    osh_in = 10*log10(mean(sig.^2)/mean(noise.^2));
 
 sig_in_MR_noise = zeros(K, length(sig));
 sig_in_MR_sig = zeros(K, length(sig));
 
-tau = (d*sind(thetaan))/(c);
-osh_in = mean(sig.^2)/mean(noise.^2);
 %%
 for k = 1:K
     [y_shift] = shift( noise, tau*(k-1), fs);

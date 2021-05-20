@@ -9,6 +9,7 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     teta = 0:0.5:90;
     W_fft = reshape(W,N_el,J);
     W_fft = fft(W_fft,N_f,2);
+    length(W_fft(1,:))
     
 %      a_phi = [-sind(teta).*cosd(phi_const) ; -sind(teta).*sind(phi_const) ; -cosd(teta)];
 %      a_teta = [-sind(teta_const).*cosd(phi) ; -sind(teta_const).*sind(phi) ; -cosd(teta_const).*ones(1,length(phi))];
@@ -20,8 +21,8 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     a_p_teta = a_teta'*p_el;
     
     for f_i = 1:length(f_pos)
-        BP_phi(f_i,:) = W_fft(:,f_i)'*exp(-1i*2*pi*f_pos(f_i).*a_p_phi'/c);
-        BP_teta(f_i,:) = W_fft(:,f_i)'*exp(-1i*2*pi*f_pos(f_i).*a_p_teta'/c);
+        BP_phi(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_phi'/c);
+        BP_teta(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_teta'/c);
     end   
     BP_phi = abs(BP_phi).^2; 
     BP_teta = abs(BP_teta).^2;
@@ -43,8 +44,8 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     title(tit)
     ylabel("angle,\theta");
     zlabel("BP, dB");
-%     shading interp 
-%     grid on %
+    shading interp 
+    grid on %
 %     colormap gray
     
     [X_teta,Y_teta] = meshgrid(f_pos,phi);
@@ -58,8 +59,8 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     ylabel("angle,\phi");
     title(tit)
     zlabel("BP, dB");
-%     shading interp 
-%     grid on %
+    shading interp 
+    grid on %
 %     colormap gray
 %     
 end

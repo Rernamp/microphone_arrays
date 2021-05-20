@@ -1,10 +1,10 @@
-function [signal_shift] = shift_plane(signal,phi,theta,p_el,fs)
+function [signal_shift] = shift_plane(signal,phi,teta,p_el,fs)
 c = 343;
 
 signal_fft = fft(signal);
 signal_fft(1) = 0;
 signal = ifft(signal_fft);
-a = [-sind(theta)*cosd(phi) -sind(theta)*sind(phi) -cosd(theta)];
+a = [-cosd(teta).*cosd(phi)  -cosd(teta).*sind(phi)  -sind(teta)];
 
 tau = a*p_el/c;
 
