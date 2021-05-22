@@ -1,5 +1,6 @@
-function [y, h] = func_LC_RLS(s_in,K,J,lamda)
+function [y, h] = func_LC_RLS(s_in,J,K)
 
+    lamda = 1;
     x = zeros(K*J,1);
     y = zeros(length(s_in),1);
     alpha = zeros(length(s_in),1);
