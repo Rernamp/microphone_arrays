@@ -9,7 +9,7 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     teta = 0:0.5:90;
     W_fft = reshape(W,N_el,J);
     W_fft = fft(W_fft,N_f,2);
-    length(W_fft(1,:))
+   
     
 %      a_phi = [-sind(teta).*cosd(phi_const) ; -sind(teta).*sind(phi_const) ; -cosd(teta)];
 %      a_teta = [-sind(teta_const).*cosd(phi) ; -sind(teta_const).*sind(phi) ; -cosd(teta_const).*ones(1,length(phi))];
