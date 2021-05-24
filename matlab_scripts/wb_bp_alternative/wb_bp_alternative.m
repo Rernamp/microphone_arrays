@@ -124,6 +124,10 @@ zlabel("BP, dB");
 shading interp 
 grid on %
 %%
-[B,BB] = plot_bp_for_place(p_loc,phi_const,teta_const,L,W,fs,L,N);
+Start = cputime;
+[B,BB] = plot_bp_for_place(p_loc,phi_const,teta_const,L*2,W,fs,L,N);
+Elapsed = cputime - Start
 % [B_DIM]=plot_wb_bp_freq_3d(W,N,L,p_loc,L/2,phi_const, teta_const);
-[B_phi, B_teta] = wb_bp_without_fft(p_loc,phi_const,teta_const,L,W,fs,L);
+Start = cputime;
+[B_phi, B_teta] = wb_bp_without_fft(p_loc,phi_const,teta_const,L*2,W,fs,L);
+Elapsed = cputime - Start

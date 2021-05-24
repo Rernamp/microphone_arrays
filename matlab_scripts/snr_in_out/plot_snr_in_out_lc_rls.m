@@ -36,14 +36,17 @@ SNR = -40:5:20;
 for i = 1:length(SNR)
     
     
-    disp_noise = mean(sig.^2)/(10^(SNR(i)/10));
+    disp_noise(i) = mean(sig.^2)/(10^(SNR(i)/10));
     noise_i(:,i) = noise * sqrt(disp_noise(i));
     
     osh_in(i) = 10*log10(mean(sig.^2)/mean(noise_i(:,i).^2));
     
     signal_shift = shift_plane(sig,phi_sig,teta_sig,p_loc,fs);
     noise_shift = shift_plane(noise_i(:,i),phi_noise,teta_noise,p_loc,fs);
-
+    
+    signal_shift = awgn(signal_shift,35);
+    noise_shift = awgn(noise_shift,35);
+    
     [y_signal,W_n] = func_LC_RLS(signal_shift, L, N);
     [y_noise,W_n] = func_LC_RLS(noise_shift, L, N);
     
@@ -56,5 +59,9 @@ end
 %%
 figure()
 plot(osh_in, osh_out)
+grid on
 
+legend('LC RLS')
+xlabel("SNR_{input}")
+ylabel("Выигрышь ОСШ")
 save SNR_LC_RLS osh_out osh_in

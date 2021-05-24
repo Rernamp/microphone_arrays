@@ -45,7 +45,10 @@ for i = 1:length(SNR)
     
     signal_shift = shift_plane(sig,phi_sig,teta_sig,p_loc,fs);
     noise_shift = shift_plane(noise_i(:,i),phi_noise,teta_noise,p_loc,fs);
-
+    
+    signal_shift = awgn(signal_shift,35);
+    noise_shift = awgn(noise_shift,35);
+    
     [y_signal_LC_RLS,W_n] = func_LC_RLS(signal_shift, L, N);
     [y_noise_LC_RLS,W_n] = func_LC_RLS(noise_shift, L, N);
     

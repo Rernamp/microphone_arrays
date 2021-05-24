@@ -20,7 +20,7 @@ p_loc = gen_place_el(4,4,d,d,1)';
 [sig,fs] = audioread('speech_dft_8kHz.wav');
 
 t = 2;
-m = 500;
+m = 1500;
 time = 0:1/fs:(length(noise)-1)/fs;
 %%
 sig = sig(1:t*fs);
@@ -43,7 +43,9 @@ for i = 1:length(SNR)
     
     signal_shift = shift_plane(sig,phi_sig,teta_sig,p_loc,fs);
     noise_shift = shift_plane(noise_i(:,i),phi_noise,teta_noise,p_loc,fs);
-
+    signal_shift = awgn(signal_shift,35);
+    noise_shift = awgn(noise_shift,35);
+    
     [y_signal,W_n] = spat_filt_wb_time_lc_lms(signal_shift, L, N, mu);
     [y_noise,W_n] = spat_filt_wb_time_lc_lms(noise_shift, L, N, mu);
 
@@ -51,18 +53,30 @@ for i = 1:length(SNR)
     
     y_signal = y_signal(m:end);
     y_noise = y_noise(m:end);
-    osh_out(i) = 10*log10(mean(y_signal.^2)/mean(y_noise.^2));
-    osh_out(i) = osh_out(i) - osh_in(i);
+    k = sig(m:end) + noise_i(m:end,i);
+    kk = y_signal + y_noise;
+    
+    osh_out_LC_LMS(i) = 10*log10(mean(y_signal.^2)/mean(y_noise.^2));
+    osh_out_LC_LMS(i) = osh_out_LC_LMS(i) - osh_in(i);
 end
 
 %%
 load SNR_LC_RLS
-
+osh_out_LC_RLS = osh_out;
+figure()
+hold on
+grid on
+plot(osh_in, osh_out_LC_LMS)
+plot(osh_in,osh_out_LC_RLS)
+legend('LC LMS', 'LC RLS')
+xlabel("SNR_{input}")
+ylabel("Выигрышь ОСШ")
+%%
 figure()
 hold on
 grid on
 plot(osh_in, osh_out)
-plot(osh_in,osh_out_LC_RLS)
-legend('LC LMS', 'LC RLS')
+
+legend('LC LMS')
 xlabel("SNR_{input}")
 ylabel("Выигрышь ОСШ")
