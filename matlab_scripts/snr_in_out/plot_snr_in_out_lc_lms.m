@@ -46,13 +46,13 @@ for i = 1:length(SNR)
 
     [y_signal,W_n] = spat_filt_wb_time_lc_lms(signal_shift, L, N, mu);
     [y_noise,W_n] = spat_filt_wb_time_lc_lms(noise_shift, L, N, mu);
-    
+
 
     
     y_signal = y_signal(m:end);
     y_noise = y_noise(m:end);
     osh_out(i) = 10*log10(mean(y_signal.^2)/mean(y_noise.^2));
-    osh_out(i) = osh_out(i) - SNR(i);
+    osh_out(i) = osh_out(i) - osh_in(i);
 end
 
 %%

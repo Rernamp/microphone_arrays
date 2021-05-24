@@ -21,8 +21,10 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     a_p_teta = a_teta'*p_el;
     
     for f_i = 1:length(f_pos)
-        BP_phi(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_phi'/c);
-        BP_teta(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_teta'/c);
+%         BP_phi(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_phi'/c);
+%         BP_teta(f_i,:) = (W_fft(:,f_i)')*exp(-1i*2*pi*f_pos(f_i).*a_p_teta'/c);
+        BP_phi(f_i,:) = exp(-1i*2*pi*f_pos(f_i).*a_p_phi/c)*(W_fft(:,f_i));
+        BP_teta(f_i,:) = exp(-1i*2*pi*f_pos(f_i).*a_p_teta/c)*(W_fft(:,f_i));
     end   
     BP_phi = abs(BP_phi).^2; 
     BP_teta = abs(BP_teta).^2;
@@ -33,30 +35,30 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     BP_phi_dB(BP_phi_dB < -40) = -40;
     BP_teta_dB(BP_teta_dB < -40) = -40;
     
-    [X_phi,Y_phi] =  meshgrid(f_pos,teta);
+    [X_phi,Y_phi] =  meshgrid(teta,f_pos);
     
     figure()
     tit = strcat("Const \phi = " ,string(phi_const));
-    surf(X_phi,Y_phi,BP_phi_dB')
+    surf(X_phi,Y_phi,BP_phi_dB)
     grid on
     zlim([-40 50])
-    xlabel("frequency , f");
+    ylabel("frequency , f");
     title(tit)
-    ylabel("angle,\theta");
+    xlabel("angle,\theta");
     zlabel("BP, dB");
     shading interp 
     grid on %
 %     colormap gray
     
-    [X_teta,Y_teta] = meshgrid(f_pos,phi);
+    [X_teta,Y_teta] = meshgrid(phi,f_pos);
     
     figure()
     tit = strcat("Const \theta = " ,string(teta_const));
-    surf(X_teta,Y_teta,BP_teta_dB')
+    surf(X_teta,Y_teta,BP_teta_dB)
     grid on
     zlim([-40 50])
-    xlabel("frequency , f");
-    ylabel("angle,\phi");
+    ylabel("frequency , f");
+    xlabel("angle,\phi");
     title(tit)
     zlabel("BP, dB");
     shading interp 
