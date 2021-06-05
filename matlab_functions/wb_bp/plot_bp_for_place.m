@@ -38,32 +38,32 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     [X_phi,Y_phi] =  meshgrid(teta,f_pos);
     
     figure()
-    tit = strcat("Const \phi = " ,string(phi_const));
+    tit = strcat("Фиксированый угол \phi = " ,string(phi_const));
     surf(X_phi,Y_phi,BP_phi_dB)
     grid on
-    zlim([-40 50])
-    ylabel("frequency , f");
+ 
+    ylabel("Частота , Гц");
     title(tit)
-    xlabel("angle,\theta");
-    zlabel("BP, dB");
+    xlabel("угол подъёма,\theta");
+    zlabel("BP, дБ");
     shading interp 
     grid on %
-%     colormap gray
+    colormap gray
     
     [X_teta,Y_teta] = meshgrid(phi,f_pos);
     
     figure()
-    tit = strcat("Const \theta = " ,string(teta_const));
+    tit = strcat("Фиксированый угол \theta = " ,string(teta_const));
     surf(X_teta,Y_teta,BP_teta_dB)
     grid on
-    zlim([-40 50])
-    ylabel("frequency , f");
-    xlabel("angle,\phi");
+  
+    ylabel("Частота , Гц");
+    xlabel("угол азимута,\phi");
     title(tit)
-    zlabel("BP, dB");
+    zlabel("BP, дБ");
     shading interp 
     grid on %
-%     colormap gray
+    colormap gray
 %     
 end
 
