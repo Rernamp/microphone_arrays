@@ -43,8 +43,8 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     grid on
  
     ylabel("Частота , Гц");
-    title(tit)
-    xlabel("угол подъёма,\theta");
+    %title(tit)
+    xlabel("Угол подъёма, град");
     zlabel("BP, дБ");
     shading interp 
     grid on %
@@ -58,8 +58,8 @@ function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_
     grid on
   
     ylabel("Частота , Гц");
-    xlabel("угол азимута,\phi");
-    title(tit)
+    xlabel("Угол азимута, град");
+    %title(tit)
     zlabel("BP, дБ");
     shading interp 
     grid on %

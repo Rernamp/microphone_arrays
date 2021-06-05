@@ -68,9 +68,9 @@ hold on
 grid on
 plot(osh_in, osh_out_LC_LMS)
 plot(osh_in,osh_out_LC_RLS)
-legend('LC LMS', 'LC RLS')
-xlabel("SNR_{input}")
-ylabel("Выигрышь ОСШ")
+legend('LC NLMS', 'LC RLS')
+xlabel("Входной ОСШ, дБ")
+ylabel("Выигрышь ОСШ, дБ")
 %%
 figure()
 hold on

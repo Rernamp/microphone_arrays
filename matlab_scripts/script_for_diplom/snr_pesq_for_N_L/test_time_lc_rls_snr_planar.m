@@ -30,21 +30,22 @@ noise = noise(1:t*fs);
 
 signal_shift = shift_plane(signal,phi_sig,teta_sig,p_loc,fs);
 noise_shift = shift_plane(noise,phi_noise,teta_noise,p_loc,fs);
-
+m = 500;
 
 mu = 1;
 
 time = 0:1/fs:(length(noise)-1)/fs;
-
-L_max = 64;
+%%
+L_max = 56;
 L_min = 16;
 L = L_min:L_max; 
 i = 1;
 
-for l = L_min:2:L_max
+for l = L_min:4:L_max
     [y_noise,W_n] = spat_filt_wb_time_lc_rls(noise_shift, l, K);
     [y_sig,W_s] = spat_filt_wb_time_lc_rls(signal_shift, l, K);
-
+    y_sig = y_sig(m:end);
+    y_noise = y_noise(m:end);
     osh_l(i) = mean(y_sig.^2)/mean(y_noise.^2);
     i = i+1;
    
@@ -64,11 +65,13 @@ for p = 1:length(k)
     
     [y_noise,W_n] = spat_filt_wb_time_lc_rls(noise_shift, L_k,k(p));
     [y_sig,W_s] = spat_filt_wb_time_lc_rls(signal_shift, L_k, k(p));
+    y_sig = y_sig(m:end);
+    y_noise = y_noise(m:end);
     osh_k(p) = mean(y_sig.^2)/mean(y_noise.^2);
     
 end
 %%
-l = L_min:2:L_max;
+l = L_min:4:L_max;
 SNR_L = db(osh_l-osh_in);
 figure()
 plot(l,SNR_L)
@@ -79,6 +82,7 @@ grid on
 %%
 
 SNR_K = db(osh_k-osh_in);
+SNR_K = aa;
 figure()
 plot(k,SNR_K)
 ylabel('ОСШ')

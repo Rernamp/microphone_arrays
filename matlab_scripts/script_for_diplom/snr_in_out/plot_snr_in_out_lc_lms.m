@@ -66,11 +66,11 @@ osh_out_LC_RLS = osh_out;
 figure()
 hold on
 grid on
-plot(osh_in, osh_out_LC_LMS)
-plot(osh_in,osh_out_LC_RLS)
+plot(osh_in, osh_out_LC_LMS,'LineWidth',3)
+plot(osh_in,osh_out_LC_RLS,'LineWidth',3)
 legend('LC LMS', 'LC RLS')
-xlabel("SNR_{input}")
-ylabel("Выигрышь ОСШ")
+xlabel("Входной ОСШ, дБ")
+ylabel("Выигрыш ОСШб дБ")
 %%
 figure()
 hold on
@@ -78,5 +78,5 @@ grid on
 plot(osh_in, osh_out)
 
 legend('LC LMS')
-xlabel("SNR_{input}")
-ylabel("Выигрышь ОСШ")
+xlabel("Входной ОСШ, дБ")
+ylabel("Выигрышь ОСШ, дБ")

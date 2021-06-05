@@ -16,7 +16,7 @@ d = c/(2*f);
 d = 0.04;
 L = 32;
 N_f = 50; 
-mu = 0.01;
+mu = 1;
 c_noise =35;
 p_loc = gen_place_el(4,4,d,d,1)';
 
@@ -32,11 +32,11 @@ signal_shift = shift_plane(signal,phi_sig,teta_sig,p_loc,fs);
 noise_shift = shift_plane(noise,phi_noise,teta_noise,p_loc,fs);
 
 sig_in_MR = signal_shift+noise_shift;
-for i = 1:length(sig_in_MR(:,1))
-    sig_in_MR(i,:) = awgn(sig_in_MR(i,:),c_noise+rand);
-end
+% for i = 1:length(sig_in_MR(:,1))
+%     sig_in_MR(i,:) = awgn(sig_in_MR(i,:),c_noise+rand);
+% end
 
-[y_LMS,W_LMS] = func_Frost(sig_in_MR,L,N,mu);
+[y_LMS,W_LMS] = func_LC_NLMS(sig_in_MR,L,N,mu);
 [y_RLS,W_RLS] = func_LC_RLS(sig_in_MR,L,N);
 %%
 
@@ -83,4 +83,4 @@ xlabel("Время, с")
 %%
 phi_const = 0;
 teta_const = 0;
-[B,BB] = plot_bp_for_place(p_loc,phi_const,teta_const,N_f,W_LMS,fs,L,N);
+[B,BB] = plot_bp_for_place(p_loc,phi_const,teta_const,N_f,W_RLS,fs,L,N);

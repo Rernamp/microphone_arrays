@@ -21,8 +21,8 @@ mu = 0.01;
 c_noise =35;
 p_loc = gen_place_el(sqrt(K),sqrt(K),d,d,1)';
 p_cil = p_loc;
-p_loc(3,6) = p_loc(3,6) + 0.05*rand; 
-p_loc(2,6) = p_loc(2,6) - 0.05*rand; 
+p_loc(3,6) = p_loc(3,6) + d/10; 
+p_loc(2,6) = p_loc(2,6) - d/20; 
 [noise,fs] = audioread('nois.wav');
 [signal,fs] = audioread('speech_dft_8kHz.wav');
 osh_in = mean(signal.^2)/mean(noise.^2);
@@ -49,20 +49,27 @@ figure()
 
 plot(time,y)
 grid on
-title("PESQ для LC RLS")
-xlabel("J , K = 4")
-ylabel("PESQ")
+ylabel("Амплитуда, усл.ед")
+xlabel("Время, с")
 
 
 
 figure()
 plot(time, sig_in_MR(1,:))
 grid on
-title("PESQ для LC RLS")
-xlabel("K, J = 32")
-ylabel("PESQ")
+ylabel("Амплитуда, усл.ед")
+xlabel("Время, с")
 
 %%
 phi_const = 0;
 teta_const = 0;
 [B,BB] = plot_bp_for_place(p_cil,phi_const,teta_const,N_f,W_n,fs,L,K);
+%%
+figure()
+hold on
+plot(p_loc(2,:),p_loc(3,:),'o')
+plot(p_cil(2,:),p_cil(3,:),'o')
+xline(0)
+yline(0)
+legend("МР со сдвинутым элементом","Прямоугольная равномерная МР")
+grid on

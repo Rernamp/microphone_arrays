@@ -26,43 +26,42 @@ p_loc = gen_place_el(sqrt(K),sqrt(K),d,d,1)';
 [signal,fs] = audioread('speech_dft_8kHz.wav');
 osh_in = mean(signal.^2)/mean(noise.^2);
 t = 2;
-time = 0:1/fs:t-1/fs;
+
 signal = signal(1:t*fs);
 noise = noise(1:t*fs);
 
 signal_shift = shift_plane(signal,phi_sig,teta_sig,p_loc,fs);
-noise_shift_1 = shift_plane(noise(1:length(noise)/2),phi_noise_1,teta_noise_1,p_loc,fs);
-noise_shift_2 = shift_plane(noise(1+length(noise)/2:end),phi_noise_2,teta_noise_2,p_loc,fs);
+noise_shift_1 = shift_plane(noise,phi_noise_1,teta_noise_1,p_loc,fs);
+noise_shift_2 = shift_plane(noise,phi_noise_2,teta_noise_2,p_loc,fs);
 noise_shift = [noise_shift_1 noise_shift_2];
+signal_shift = [signal_shift signal_shift];
 sig_in_MR = signal_shift + noise_shift;
 
 
-time = 0:1/fs:(length(noise)-1)/fs;
+time = 0:1/fs:(length(sig_in_MR(1,:))-1)/fs;
 
 mu = 1;
 
-time = 0:1/fs:(length(noise)-1)/fs;
+
 %%
 
 [y,W_n] = func_LC_NLMS(sig_in_MR,L,K,mu);
 figure()
-
+hold on
 plot(time,y)
+xline(time(length(time)/2))
 grid on
-title("PESQ для LC RLS")
-xlabel("J , K = 4")
-ylabel("PESQ")
-
+ylabel("Амплитуда, усл.ед")
+xlabel("Время, с")
 
 
 figure()
-
+hold on
+xline(time(length(time)/2))
 plot(time, sig_in_MR(1,:))
 grid on
-title("PESQ для LC RLS")
-xlabel("K, J = 32")
-ylabel("PESQ")
-
+ylabel("Амплитуда, усл.ед")
+xlabel("Время, с")
 %%
 phi_const = 0;
 teta_const = 0;
