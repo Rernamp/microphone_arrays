@@ -16,6 +16,9 @@ figure()
 hold on
 plot(phi_lms,PESQ_LMS_phi(:,1),'LineWidth',3)
 plot(phi_rls,PESQ_RLS_phi(:,1),'LineWidth',3)
+yline(0.9*max(PESQ_LMS_phi(:,1)))
+yline(0.9*max(PESQ_RLS_phi(:,1)))
+
 
 grid on;
 ylabel("Оценка PESQ")
