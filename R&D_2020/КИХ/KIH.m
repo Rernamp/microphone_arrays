@@ -17,7 +17,7 @@ ula = phased.ULA(N_one,d);  %создаю равномерный линейный массив
 ula.Element.BackBaffled = true;
 w = [];     %массив весовых коэфф.
 freq_range = f_down:f_den:f_up; %диапазон частот
-
+%%
 %цикл для создания весовых коэффициентов для различных частот
 for freq_range_while = f_down:f_den:f_up;    %прохожусь по каждой частоте
     lamda_sig = c/(freq_range_while);    %длина волны для определенной частоты
