@@ -1,7 +1,7 @@
 function [BP_phi_dB,BP_teta_dB] = plot_bp_for_place(p_el,phi_const,teta_const,N_f,W,fs,J,N_el)
         
     c = 343;
-    fs = 8e3;
+%     fs = 8e3;
     f = [0:N_f/2-1 -N_f/2:-1]*fs/N_f;   
     f_pos = f( 1 : length(f)/2 ); 
 

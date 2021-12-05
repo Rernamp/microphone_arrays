@@ -1,3 +1,4 @@
+
 function [ scores ] = pesqbin( reference, degraded, fs, mode )
 % PESQBIN MATLAB wrapper for the PESQ binary version 2.0.
 %

@@ -1,4 +1,4 @@
-function [ y ] = GSC_RLS(s_in, J, N)
+function [ y ,h_a] = GSC_RLS(s_in, J, N)
     
     f = [1; zeros(J-1,1)];
     B = eye(N-1,N) - [zeros(N-1,1) eye(N-1,N-1)];
