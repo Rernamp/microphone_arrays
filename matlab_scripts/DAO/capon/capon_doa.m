@@ -7,7 +7,7 @@ K = 2;
 d = 0.04;
 
 
-thetaan = 15; 
+thetaan = 60; 
 
 % [noise,fs] = audioread('sound_44.1kHz.wav');
 [noise,fs] = audioread('sound.wav');
@@ -26,6 +26,7 @@ noise_shift = zeros(K, length(noise));
 %%
 for k = 1:K
     [y_shift] = shift( noise, tau*(k-1), fs);
+    awgn(y_shift, 60);
     noise_shift(k,:) = y_shift;
 end
 
@@ -36,5 +37,11 @@ a = [0.5 0.5];
 
 X_fft = [fft(noise_shift(1,:)); fft(noise_shift(2,:))];
 
-phi_find = [-90:90];
+shift_fft = X_fft(1,:) - X_fft(2,:);
+
+y_del = noise_shift(1,:) - noise_shift(2,:);
+y_del = y_del ./noise_shift(1,:);
+
+hold on
+plot(y_del)
 

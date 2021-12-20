@@ -1,49 +1,44 @@
+%% PDM generation
 close all;
-clear;
+% clear all
+% 4MHz sampling frequency as given in question
+fs = 4e6;
+ts = 1/fs;
 
-fs = 30000;
-time = 2;
-N = 16;
-t = 0:1/fs:time;
-f = 10;
-y = sin(2*pi*f*t) + sin(2*pi*(f+10)*t);
-maxi = max(y);
-mini = min(y);
-del_A = 2*(maxi - mini)/(2^N);
+% 50 kHz signal frequency as given in question
+f50k = 50e3;
+t50k = 1/f50k;
 
-y_a = floor(y./del_A);
+% Let's generate data for 20 cycles of 50kHz
+t = [0 : ts : 20*t50k]';
+
+% original signal : 50kHz modulated by a pulse.
+os = 0.5 * sin(f50k*2*pi*t) .* (t >= 5*t50k & t<= 15*t50k);
+
+% PDM generation as Given in Wikipedia
+% https://en.wikipedia.org/wiki/Pulse-density_modulation#Algorithm
+pdm = zeros(length(os),1);
 qe = 0;
-
-for i = 1:length(y_a)
-    d = y_a(i);
-    if (d >= qe)
-        pdm_y(i) = 1;
+for ii = 1 : length(os)
+    if(os(ii) >= qe)
+        pdm(ii) = 1;
+    else
+        pdm(ii) = -1;
     end
-    if (d < qe)
-        pdm_y(i) = 0;
-    end
-    
-    qe = pdm_y(i) - d + qe;
+    qe = pdm(ii) - os(ii) + qe;
 end
 
-%%
+% change all the -1 to 0 to match format in the question.
+pdm(pdm < 0) = 0;
 
-figure()
-plot(t,pdm_y)
+hold on 
+plot(pdm)
+plot(0.5+os)
+xlim([400 500])
 
-%%
-N = 16;
-y_pcm = zeros(1, length(y_a)-15);
-for i = 1:length(y_a)-15
-    
-    for k = 0:15
-        y_pcm(i) = y_pcm(i) + pdm_y(i+k)*2^(k);
-    end
-    
-    
-    
-end
 
+[numer, denom] = cheby2(4, 23, 300e3/2e6);
+
+filtered = filtfilt(numer, denom, pdm);
 %%
-figure()
-plot(t(1:length(y_a)-15),y_pcm)
+plot(filtered)
