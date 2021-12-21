@@ -25,6 +25,8 @@ data_2 = data_pdm(2:2:end);
 x_ff = fft(data_1);
 x_ff(1) = 0;
 data_1 = ifft(x_ff);
+HP = fir1(256,300/8000,'high');
+PCM = filter(HP,1,data_1);
 
 [numer, denom] = cheby2(4, 23, 8e3/512e3);
 
@@ -32,7 +34,10 @@ data_1 = ifft(x_ff);
 
 pcm = filtfilt(numer, denom, data_1);
 pcm = pcm(1:64:end);
+PCM = PCM(1:64:end);
 figure()
+hold on
+plot(PCM)
 plot(pcm)
 
 
